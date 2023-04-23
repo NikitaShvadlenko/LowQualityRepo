@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>#(title)</title>
+</head>
+
+<body>
+  <h1>#(title)</h1>
+  <button id="play-button">Play Sound</button>
+
+  <script>
+    const playButton = document.getElementById("play-button");
+
+    playButton.addEventListener("click", function() {
+      const socket = new WebSocket("ws://localhost:8080/play-sound");
+
+      socket.addEventListener('open', function (event) {
+        console.log('WebSocket connection established.');
+      });
+
+      socket.addEventListener('message', function (event) {
+        console.log('Received message:', event.data);
+        const audio = new Audio('/sound.mp3');
+        audio.play();
+      });
+
+      socket.addEventListener('close', function (event) {
+        console.log('WebSocket connection closed.');
+      });
+    });
+  </script>
+
+</body>
+</html>
